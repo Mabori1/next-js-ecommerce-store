@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -32,7 +33,16 @@ export default function ProductForm() {
           <Label htmlFor="description">Desctiption</Label>
           <Textarea name="description" id="description" required />
         </div>
+        <div className="space-y-2">
+          <Label htmlFor="file">File</Label>
+          <Input name="file" id="file" type="file" required />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="image">Image</Label>
+          <Input name="image" id="image" type="file" required />
+        </div>
       </div>
+      <Button type="submit">Save</Button>
     </form>
   );
 }
