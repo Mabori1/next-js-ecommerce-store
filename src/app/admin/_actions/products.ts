@@ -92,7 +92,6 @@ export async function updateProduct(
   await db.product.update({
     where: { id },
     data: {
-      isAvailableForPurchase: true,
       name: data.name,
       description: data.description,
       priceInCents: data.priceInCents,
