@@ -6,18 +6,31 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { formatCurrency } from "@/lib/formatters";
 import { useState } from "react";
-import { addProduct } from "../../_actions/products";
+import { addProduct, updateProduct } from "../../_actions/products";
 import { useFormState, useFormStatus } from "react-dom";
+import { Product } from "@prisma/client";
+import Image from "next/image";
 
-export default function ProductForm() {
-  const [priceInCents, setPriceInCents] = useState<number>();
-  const [error, action] = useFormState(addProduct, {});
+export default function ProductForm({ product }: { product?: Product | null }) {
+  const [priceInCents, setPriceInCents] = useState<number | undefined>(
+    product?.priceInCents,
+  );
+  const [error, action] = useFormState(
+    product == null ? addProduct : updateProduct.bind(null, product.id),
+    {},
+  );
 
   return (
     <form action={action} className="space-y-8">
       <div className="space-y-2">
         <Label htmlFor="name">Name</Label>
-        <Input name="name" id="name" type="text" required />
+        <Input
+          name="name"
+          id="name"
+          type="text"
+          required
+          defaultValue={product?.name || ""}
+        />
         {error.name && <div className="text-destructive">{error.name}</div>}
       </div>
       <div className="space-y-2">
@@ -38,19 +51,45 @@ export default function ProductForm() {
         </div>
         <div className="space-y-2">
           <Label htmlFor="description">Desctiption</Label>
-          <Textarea name="description" id="description" required />
+          <Textarea
+            name="description"
+            id="description"
+            required
+            defaultValue={product?.description}
+          />
           {error.description && (
             <div className="text-destructive">{error.description}</div>
           )}
         </div>
         <div className="space-y-2">
           <Label htmlFor="file">File</Label>
-          <Input name="file" id="file" type="file" required />
+          <Input
+            name="file"
+            id="file"
+            type="file"
+            required={product === null}
+          />
+          {product != null && (
+            <div className="text-muted-foreground">{product.filePath}</div>
+          )}
           {error.file && <div className="text-destructive">{error.file}</div>}
         </div>
         <div className="space-y-2">
           <Label htmlFor="image">Image</Label>
-          <Input name="image" id="image" type="file" required />
+          <Input
+            name="image"
+            id="image"
+            type="file"
+            required={product === null}
+          />
+          {product != null && (
+            <Image
+              src={product.imagePath}
+              height="400"
+              width="400"
+              alt="Product Image"
+            />
+          )}
           {error.image && <div className="text-destructive">{error.image}</div>}
         </div>
       </div>
