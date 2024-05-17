@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
-import PageHeader from "../_components/PageHeader";
-import Link from "next/link";
+import { Button } from "@/components/ui/button"
+import { PageHeader } from "../_components/PageHeader"
+import Link from "next/link"
 import {
   Table,
   TableBody,
@@ -8,20 +8,21 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import db from "@/db/db";
-import { CheckCircle2, MoreVertical, XCircle } from "lucide-react";
-import { formatCurrency, formatNumber } from "@/lib/formatters";
+} from "@/components/ui/table"
+import db from "@/db/db"
+import { CheckCircle2, MoreVertical, XCircle } from "lucide-react"
+import { formatCurrency, formatNumber } from "@/lib/formatters"
 import {
-  DropdownMenuTrigger,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
-import ActiveToggleDropdownItem, {
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import {
+  ActiveToggleDropdownItem,
   DeleteDropdownItem,
-} from "./_component/ProductActions";
+} from "./_components/ProductActions"
 
 export default function AdminProductsPage() {
   return (
@@ -32,12 +33,12 @@ export default function AdminProductsPage() {
           <Link href="/admin/products/new">Add Product</Link>
         </Button>
       </div>
-      <ProductTable />
+      <ProductsTable />
     </>
-  );
+  )
 }
 
-async function ProductTable() {
+async function ProductsTable() {
   const products = await db.product.findMany({
     select: {
       id: true,
@@ -47,16 +48,16 @@ async function ProductTable() {
       _count: { select: { orders: true } },
     },
     orderBy: { name: "asc" },
-  });
+  })
 
-  if (products.length === 0) return <p>No product found.</p>;
+  if (products.length === 0) return <p>No products found</p>
 
   return (
     <Table>
       <TableHeader>
         <TableRow>
           <TableHead className="w-0">
-            <span className="sr-only">Avariable For Purchase</span>
+            <span className="sr-only">Available For Purchase</span>
           </TableHead>
           <TableHead>Name</TableHead>
           <TableHead>Price</TableHead>
@@ -67,18 +68,18 @@ async function ProductTable() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {products.map((product) => (
+        {products.map(product => (
           <TableRow key={product.id}>
             <TableCell>
               {product.isAvailableForPurchase ? (
                 <>
-                  <span className="sr-only">Avariable</span>
+                  <span className="sr-only">Available</span>
                   <CheckCircle2 />
                 </>
               ) : (
                 <>
-                  <span className="sr-only">Unavaiable</span>
-                  <XCircle />
+                  <span className="sr-only">Unavailable</span>
+                  <XCircle className="stroke-destructive" />
                 </>
               )}
             </TableCell>
@@ -118,5 +119,5 @@ async function ProductTable() {
         ))}
       </TableBody>
     </Table>
-  );
+  )
 }

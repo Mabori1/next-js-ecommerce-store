@@ -1,12 +1,11 @@
-import React from "react";
-import { Nav, NavLink } from "@/components/Nav";
+import { Nav, NavLink } from "@/components/Nav"
 
-export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic"
 
 export default function AdminLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <>
@@ -18,5 +17,5 @@ export default function AdminLayout({
       </Nav>
       <div className="container my-6">{children}</div>
     </>
-  );
+  )
 }
